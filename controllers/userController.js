@@ -1,4 +1,5 @@
 import User from "../models/user.js"
+import bcrypt from "bcrypt"
 
 export async function createUser(req, res) {
     try {
@@ -7,11 +8,13 @@ export async function createUser(req, res) {
         res.status(400).json({ message : "User already exists" })
         return
     }
+    const passwordHash = bcrypt.hashSync(req.body.password, 10)
+
     const newUser = new User({
         email : req.body.email,
         firstName : req.body.firstName,
         lastName : req.body.lastName,
-        password : req.body.password,
+        password : passwordHash,
     })
     await newUser.save()
     res.status(201).json({ message : "User created successfully" })
@@ -21,3 +24,4 @@ export async function createUser(req, res) {
         res.status(500).json({ message : err.message })
     }
 }
+
