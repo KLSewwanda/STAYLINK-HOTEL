@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import dns from "node:dns"
 import userRouter from "./routers/userRouter.js"
+import authenticate from './middlewares/authenticate.js'
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 dotenv.config()
@@ -17,6 +18,10 @@ mongoose.connect(mongoDBURI).then(
 
 const app = express()
 app.use(express.json())
+
+app.use(authenticate)
+    
+
 
 app.use("/users", userRouter)
 
