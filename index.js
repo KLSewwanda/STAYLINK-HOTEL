@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import dns from "node:dns"
+import userRouter from "./routers/userRouter.js"
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 dotenv.config()
@@ -16,6 +17,8 @@ mongoose.connect(mongoDBURI).then(
 
 const app = express()
 app.use(express.json())
+
+app.use("/users", userRouter)
 
 app.listen(3000, () => {
         console.log('Server is running on port 3000')
